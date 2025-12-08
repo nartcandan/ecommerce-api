@@ -3,6 +3,7 @@ package com.nartcandan.ecommerce.service.impl;
 import com.nartcandan.ecommerce.domain.entities.Category;
 import com.nartcandan.ecommerce.repository.CategoryRepository;
 import com.nartcandan.ecommerce.service.CategoryService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +18,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getAllCategories(){
         return categoryRepository.findAllWithProductCount();
+    }
+
+    @Override
+    @Transactional
+    public Category addCategory(Category category) {
+        if (categoryRepository.existsByNameIgnoreCase(category.getName())){
+            throw new IllegalArgumentException("Category already exist with name: "+category.getName());
+        }
+        return categoryRepository.save(category);
     }
 }
