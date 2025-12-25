@@ -5,6 +5,7 @@ import com.nartcandan.ecommerce.domain.dtos.CreateCategoryRequest;
 import com.nartcandan.ecommerce.domain.entities.Category;
 import com.nartcandan.ecommerce.mapper.CategoryMapper;
 import com.nartcandan.ecommerce.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDto> addCategory(@RequestBody CreateCategoryRequest createCategoryRequest){
+    public ResponseEntity<CategoryDto> addCategory(@RequestBody @Valid CreateCategoryRequest createCategoryRequest){
         Category category = categoryService.addCategory(categoryMapper.toEntity(createCategoryRequest));
 
         return new ResponseEntity<>(categoryMapper.toDto(category), HttpStatus.CREATED);
