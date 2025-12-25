@@ -47,4 +47,10 @@ public class CategoryServiceImpl implements CategoryService {
             throw new IllegalArgumentException("There is no category with given id");
         }
     }
+
+    @Override
+    public Category getCategory(UUID id) {
+        return categoryRepository.findByIdWithProductCount(id).orElseThrow(() ->
+                new IllegalArgumentException("There is no category with given id: " + id));
+    }
 }

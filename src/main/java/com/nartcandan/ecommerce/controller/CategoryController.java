@@ -30,7 +30,6 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<CategoryDto> addCategory(@RequestBody @Valid CreateCategoryRequest createCategoryRequest){
         Category category = categoryService.addCategory(categoryMapper.toEntity(createCategoryRequest));
-
         return new ResponseEntity<>(categoryMapper.toDto(category), HttpStatus.CREATED);
     }
 
@@ -38,6 +37,12 @@ public class CategoryController {
     public ResponseEntity<Void> deleteCategory(@PathVariable UUID id){
         categoryService.deleteCategory(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<CategoryDto> getCategory(@PathVariable UUID id){
+        CategoryDto categoryDto = categoryMapper.toDto(categoryService.getCategory(id));
+        return ResponseEntity.ok(categoryDto);
     }
 
 }
