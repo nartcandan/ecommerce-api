@@ -44,5 +44,4 @@ public class CategoryController {
         CategoryDto categoryDto = categoryMapper.toDto(categoryService.getCategory(id));
         return ResponseEntity.ok(categoryDto);
     }
-
 }
