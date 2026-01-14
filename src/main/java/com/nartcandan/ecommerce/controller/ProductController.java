@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/product")
@@ -29,5 +30,11 @@ public class ProductController {
     public ResponseEntity<ProductDetailDto> createProduct(@RequestBody @Valid CreateProductRequest request){
         ProductDetailDto productDto = productService.createProduct(request);
         return ResponseEntity.ok(productDto);
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<ProductDetailDto> getProduct(@RequestParam UUID id){
+        ProductDetailDto productDetailDto = productService.getProductById(id);
+        return ResponseEntity.ok(productDetailDto);
     }
 }

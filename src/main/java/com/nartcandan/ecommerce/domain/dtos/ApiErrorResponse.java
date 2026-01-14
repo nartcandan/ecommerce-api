@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -16,7 +17,9 @@ import java.util.List;
 public class ApiErrorResponse {
     private int status;
     private String message;
-    private List<FieldError> errors;
+
+    @Builder.Default
+    private List<FieldError> errors = new ArrayList<>();
 
     @Data
     @NoArgsConstructor

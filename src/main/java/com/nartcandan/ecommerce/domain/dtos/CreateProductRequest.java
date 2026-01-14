@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateProductRequest {
-    @NotBlank(message = "Product name is reqired")
+    @NotBlank(message = "Product name is required")
     @Size(min = 2, max = 50)
     @Pattern(regexp = "^[\\w\\s-]+$", message = "Category name can only contain letters, numbers, space and hyphens")
     private String name;

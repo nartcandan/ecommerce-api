@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -38,5 +39,12 @@ public class ProductServiceImpl implements ProductService {
         Product product = productMapper.toEntity(request);
         product.setCategory(category.get());
         return productMapper.toDetailDto(productRepository.save(product));
+    }
+
+    @Override
+    public ProductDetailDto getProductById(UUID id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(()-> new IllegalArgumentException("Product is not found with given id"));
+        return productMapper.toDetailDto(product);
     }
 }
