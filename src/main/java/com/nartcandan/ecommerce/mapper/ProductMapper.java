@@ -3,10 +3,12 @@ package com.nartcandan.ecommerce.mapper;
 import com.nartcandan.ecommerce.domain.dtos.CreateProductRequest;
 import com.nartcandan.ecommerce.domain.dtos.ProductDetailDto;
 import com.nartcandan.ecommerce.domain.dtos.ProductListDto;
+import com.nartcandan.ecommerce.domain.dtos.UpdateProductRequest;
 import com.nartcandan.ecommerce.domain.entities.Category;
 import com.nartcandan.ecommerce.domain.entities.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -28,6 +30,12 @@ public interface ProductMapper {
 
     @Mapping(target = "category", expression = "java(mapCategory(product.getCategory()))")
     ProductDetailDto toDetailDto(Product product);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "category", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    void updateEntityFromDto(UpdateProductRequest request,
+                             @MappingTarget Product product);
 
     default ProductDetailDto.CategoryInfo mapCategory(Category category) {
         if (category == null) {

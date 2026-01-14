@@ -1,8 +1,6 @@
 package com.nartcandan.ecommerce.controller;
 
-import com.nartcandan.ecommerce.domain.dtos.CreateProductRequest;
-import com.nartcandan.ecommerce.domain.dtos.ProductDetailDto;
-import com.nartcandan.ecommerce.domain.dtos.ProductListDto;
+import com.nartcandan.ecommerce.domain.dtos.*;
 import com.nartcandan.ecommerce.mapper.ProductMapper;
 import com.nartcandan.ecommerce.service.ProductService;
 import jakarta.validation.Valid;
@@ -33,8 +31,27 @@ public class ProductController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<ProductDetailDto> getProduct(@RequestParam UUID id){
+    public ResponseEntity<ProductDetailDto> getProduct(@PathVariable UUID id){
         ProductDetailDto productDetailDto = productService.getProductById(id);
         return ResponseEntity.ok(productDetailDto);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<ProductDetailDto> updateProduct(@PathVariable UUID id, @RequestBody @Valid UpdateProductRequest request){
+        ProductDetailDto productDetailDto = productService.updateProduct(id, request);
+        return ResponseEntity.ok(productDetailDto);
+    }
+
+    @PatchMapping(path = "/{id}/inventory")
+    public ResponseEntity<Void> updateInventory(@PathVariable UUID id, @Valid @RequestBody UpdateProductInventoryRequest request){
+        productService.updateProductInventory(id,request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping(path ="/{id}/status")
+    public ResponseEntity<Void> updateStatus(@PathVariable UUID id,
+                                             @Valid @RequestBody UpdateProductStatusRequest request) {
+        productService.updateStatus(id, request);
+        return ResponseEntity.noContent().build();
     }
 }
