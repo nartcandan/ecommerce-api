@@ -54,4 +54,10 @@ public class ProductController {
         productService.updateStatus(id, request);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable UUID id){
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
+    }
 }

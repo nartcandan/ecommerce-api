@@ -87,9 +87,17 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public void updateStatus(UUID productId, UpdateProductStatusRequest request) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product is not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Product is not found"));
 
         product.setStatus(request.getStatus());
         productRepository.save(product);
+    }
+
+    @Override
+    @Transactional
+    public void deleteProduct(UUID id) {
+        Product product = productRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Product that you are trying to delete is not found"));
+        productRepository.delete(product);
     }
 }
