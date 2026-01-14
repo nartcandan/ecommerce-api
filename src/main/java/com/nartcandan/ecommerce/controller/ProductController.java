@@ -5,6 +5,7 @@ import com.nartcandan.ecommerce.mapper.ProductMapper;
 import com.nartcandan.ecommerce.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +20,9 @@ public class ProductController {
     private final ProductMapper productMapper;
     
     @GetMapping
-    public ResponseEntity<List<ProductListDto>> getAllProducts(){
-        List<ProductListDto> listDtos = productService.getAllProducts();
-        return ResponseEntity.ok(listDtos);
+    public ResponseEntity<PagedResponse<ProductListDto>> getAllProducts(Pageable pageable){
+        PagedResponse<ProductListDto> response = productService.getAllProducts(pageable);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
