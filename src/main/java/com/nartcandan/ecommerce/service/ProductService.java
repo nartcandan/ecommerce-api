@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ProductService {
-    PagedResponse<ProductListDto> getAllProducts(Pageable pageable);
+    PagedResponse<ProductListDto> getProducts(ProductFilter filter, Pageable pageable);
     ProductDetailDto createProduct(CreateProductRequest request);
     ProductDetailDto getProductById(UUID id);
     ProductDetailDto updateProduct(UUID id, UpdateProductRequest request);

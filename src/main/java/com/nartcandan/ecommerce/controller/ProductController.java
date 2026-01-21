@@ -1,15 +1,17 @@
 package com.nartcandan.ecommerce.controller;
 
 import com.nartcandan.ecommerce.domain.dtos.*;
-import com.nartcandan.ecommerce.mapper.ProductMapper;
+import com.nartcandan.ecommerce.domain.enums.ProductStatus;
 import com.nartcandan.ecommerce.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @RestController
@@ -17,11 +19,28 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-    private final ProductMapper productMapper;
-    
+
     @GetMapping
-    public ResponseEntity<PagedResponse<ProductListDto>> getAllProducts(Pageable pageable){
-        PagedResponse<ProductListDto> response = productService.getAllProducts(pageable);
+    public ResponseEntity<PagedResponse<ProductListDto>> getProducts(
+            @RequestParam(required = false) UUID categoryId,
+            @RequestParam(required = false) ProductStatus status,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) Boolean inStockOnly,
+            @RequestParam(required = false) String search,
+            @PageableDefault(page = 0, size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
+            Pageable pageable) {
+
+        ProductFilter filter = ProductFilter.builder()
+                .categoryId(categoryId)
+                .status(status)
+                .minPrice(minPrice)
+                .maxPrice(maxPrice)
+                .inStockOnly(inStockOnly)
+                .search(search)
+                .build();
+
+        PagedResponse<ProductListDto> response = productService.getProducts(filter, pageable);
         return ResponseEntity.ok(response);
     }
 

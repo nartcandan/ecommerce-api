@@ -3,6 +3,7 @@ package com.nartcandan.ecommerce.service.impl;
 import com.nartcandan.ecommerce.domain.dtos.*;
 import com.nartcandan.ecommerce.domain.entities.Category;
 import com.nartcandan.ecommerce.domain.entities.Product;
+import com.nartcandan.ecommerce.helper.ProductSpecifications;
 import com.nartcandan.ecommerce.mapper.ProductMapper;
 import com.nartcandan.ecommerce.repository.CategoryRepository;
 import com.nartcandan.ecommerce.repository.ProductRepository;
@@ -12,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +28,10 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
 
     @Override
-    public PagedResponse<ProductListDto> getAllProducts(Pageable pageable) {
-        Page<Product> page = productRepository.findAll(pageable);
+    public PagedResponse<ProductListDto> getProducts(ProductFilter filter, Pageable pageable) {
+        Specification<Product> spec = ProductSpecifications.withFilter(filter);
+
+        Page<Product> page = productRepository.findAll(spec, pageable);
 
         List<ProductListDto> content = page.getContent().stream()
                 .map(productMapper::toListDto)
